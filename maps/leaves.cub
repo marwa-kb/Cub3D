@@ -1,0 +1,17 @@
+NO ./textures/Test/big2.xpm
+SO ./textures/512x512/test4.xpm
+WE ./textures/512x512/test10.xpm
+EA ./textures/Test/big.xpm
+C 153,153,255
+F 95,211,199
+
+111111
+100001
+100001
+100001
+100S01
+100001
+100001
+100001
+100001
+111111111

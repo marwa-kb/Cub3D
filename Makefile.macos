@@ -1,0 +1,89 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile.macos                                     :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: bbaatar <marvin@42.fr>                     +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/02/25 00:09:46 by bbaatar           #+#    #+#              #
+#    Updated: 2022/02/25 00:09:49 by bbaatar          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+NAME = cub3D
+
+CC = gcc
+FLAGS = -Wall -Werror -Wextra -O3
+LIBRARIES = -lmlx -lm -lft -L$(LIBFT_DIRECTORY) -L$(MINILIBX_DIRECTORY) -framework OpenGL -framework AppKit
+INCLUDES = -I$(HEADERS_DIRECTORY) -I$(LIBFT_HEADERS) -I$(MINILIBX_HEADERS)
+
+LIBFT = $(LIBFT_DIRECTORY)libft.a
+LIBFT_DIRECTORY = ./libft/
+LIBFT_HEADERS = $(LIBFT_DIRECTORY)includes/
+
+MINILIBX = $(MINILIBX_DIRECTORY)libmlx.a
+MINILIBX_DIRECTORY = ./minilibx_macos/
+MINILIBX_HEADERS = $(MINILIBX_DIRECTORY)
+
+HEADERS_LIST = cub3d.h
+
+HEADERS_DIRECTORY = ./includes/
+HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
+
+SOURCES_DIRECTORY = ./srcs/
+SOURCES_LIST = main.c \
+				initialization.c mouse_hook.c \
+				draw_background.c load_textures.c position_player.c \
+				ft_free_tab.c end_game.c ft_error.c \
+				parsing/parsing.c parsing/get_next_line.c \
+				parsing/parsing_utils.c parsing/get_content.c \
+				parsing/ft_check_chars.c parsing/check_content.c \
+				parsing/check_line_file.c parsing/check_rgb.c \
+				parsing/get_map.c parsing/check_walls.c \
+				parsing/check_wall_continuity.c parsing/check_map.c \
+				parsing/create_limit.c \
+				my_mlx_pixel_put.c render/draw_rays.c \
+				render/keyboard.c render/render_frame.c render/render_utils.c \
+				render/move_for_back.c render/move_left_right.c \
+				render/move_utils.c render/move_lefts.c render/move_rights.c \
+				render/draw_textures.c render/draw_pixels.c \
+				render/check_verti_horiz.c
+				
+SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
+
+OBJECTS_DIRECTORY = objects/
+OBJECTS_LIST = $(SOURCES_LIST:.c=.o)
+OBJECTS	= $(addprefix $(OBJECTS_DIRECTORY), $(OBJECTS_LIST))
+
+.PHONY: all clean fclean re
+
+all: $(NAME)
+
+$(NAME): $(LIBFT) $(MINILIBX) $(OBJECTS_DIRECTORY) $(OBJECTS)
+	@$(CC) $(FLAGS) $(LIBRARIES) $(INCLUDES) $(OBJECTS) -o $(NAME)
+
+$(OBJECTS_DIRECTORY):
+	@mkdir -p $(OBJECTS_DIRECTORY)/parsing $(OBJECTS_DIRECTORY)/render
+
+$(OBJECTS_DIRECTORY)%.o : $(SOURCES_DIRECTORY)%.c $(HEADERS)
+	@$(CC) $(FLAGS) -c $(INCLUDES) $< -o $@
+
+$(LIBFT):
+	@$(MAKE) -sC $(LIBFT_DIRECTORY)
+
+$(MINILIBX):
+	@$(MAKE) -sC $(MINILIBX_DIRECTORY)
+
+clean:
+	@$(MAKE) -sC $(LIBFT_DIRECTORY) clean
+	@$(MAKE) -sC $(MINILIBX_DIRECTORY) clean
+	@rm -rf $(OBJECTS_DIRECTORY)
+
+fclean: clean
+	@rm -f $(MINILIBX)
+	@rm -f $(LIBFT)
+	@rm -f $(NAME)
+
+re:
+	@$(MAKE) fclean
+	@$(MAKE) all
