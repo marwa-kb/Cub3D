@@ -8,7 +8,7 @@ Description: with my teammate, we had to create a “realistic” 3D graphical r
 
 Constraints:
 * use the miniLibX.
-* smooth management of the window: changing to another window, minimizing, etc.
+* smooth management of the window: changing to another window, minimizing, etc.
 * display different wall textures that vary depending on which side the wall is facing (North, South, East, West).
 * possibility to set the floor and ceiling colors to two different ones.
 * the left and right arrow keys of the keyboard must allow you to look left and right in the maze.
